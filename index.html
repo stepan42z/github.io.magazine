@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин деревянных ножей</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            min-height: calc(100vh - 400px);
+            display: flex;
+            align-items: center;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .product-card h3 {
+            margin: 1rem 0;
+            color: #2c3e50;
+        }
+
+        .price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .buy-btn {
+            background-color: #2c3e50;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .buy-btn:hover {
+            background-color: #34495e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            margin-top: calc(12rem - 11px);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+            color: #ecf0f1;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #bdc3c7;
+        }
+
+        .search-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .search-input {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            width: 250px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .knife-builder {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .knife-builder h2 {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .checkbox-group {
+            display: none;
+        }
+
+        .total-price {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .total-price h3 {
+            color: #2c3e50;
+        }
+
+        .sales-info {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Поиск..." id="searchInput">
+    </div>
+
+    <header class="header">
+        <h1>Магазин деревянных ножей</h1>
+        <p>Уникальные изделия ручной работы</p>
+    </header>
+
+    <div class="container">
+        <div class="knife-builder">
+            <h2>Конструктор ножей</h2>
+            <form id="knifeBuilderForm" class="builder-form">
+                <div class="form-group">
+                    <label>Материал рукоятки:</label>
+                    <select id="handleMaterial" required>
+                        <option value="plywood">Фанера (базовая цена)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Длина клинка:</label>
+                    <select id="bladeLength" required>
+                        <option value="small">10 см (базовая цена)</option>
+                        <option value="medium">15 см (+500₽)</option>
+                        <option value="large">20 см (+1000₽)</option>
+                    </select>
+                </div>
+
+                <div class="total-price">
+                    <h3>Итоговая стоимость: <span id="totalPrice">2500</span> ₽</h3>
+                </div>
+
+                <button type="submit" class="buy-btn">Заказать нож</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Магазин деревянных ножей</p>
+            <p>Уникальные изделия ручной работы</p>
+            <p class="copyright">© 2025 Все права защищены</p>
+        </div>
+    </footer>
+
+    <script>
+        // Поиск по слову "нож"
+        const searchInput = document.getElementById('searchInput');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                if (e.target.value.toLowerCase() === 'нож') {
+                    alert('Правильный код!');
+                    window.location.href = 'secret.html';
+                } else {
+                    alert('Неверное слово!');
+                }
+            }, 3000);
+        });
+
+        // Калькулятор стоимости ножа
+        const form = document.getElementById('knifeBuilderForm');
+        const totalPriceElement = document.getElementById('totalPrice');
+        let basePrice = 2500;
+
+        function calculateTotal() {
+            let total = basePrice;
+            
+            // Материал рукоятки больше не влияет на цену
+            // const handleMaterial = document.getElementById('handleMaterial').value;
+            // switch(handleMaterial) {
+            //     case 'walnut': total += 1000; break;
+            //     case 'mahogany': total += 1500; break;
+            //     case 'ebony': total += 2000; break;
+            // }
+
+            // Длина клинка
+            const bladeLength = document.getElementById('bladeLength').value;
+            switch(bladeLength) {
+                case 'medium': total += 500; break;
+                case 'large': total += 1000; break;
+            }
+
+            totalPriceElement.textContent = total;
+        }
+
+        // Добавляем обработчики событий для всех элементов формы
+        form.querySelectorAll('select').forEach(element => {
+            element.addEventListener('change', calculateTotal);
+        });
+
+        // Обработка отправки формы
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedOptions = {
+                handleMaterial: document.getElementById('handleMaterial').value,
+                bladeLength: document.getElementById('bladeLength').value,
+                totalPrice: totalPriceElement.textContent
+            };
+            
+            // Показываем сообщение об успешной покупке
+            alert(`Нож успешно добавлен в корзину!\nСумма заказа: ${selectedOptions.totalPrice} ₽`);
+            
+            // Перенаправляем на страницу контактов с параметрами заказа
+            const params = new URLSearchParams(selectedOptions);
+            window.location.href = `contact.html?${params.toString()}`;
+        });
+
+        // Инициализация начальной цены
+        calculateTotal();
+    </script>
+</body>
+</html>
