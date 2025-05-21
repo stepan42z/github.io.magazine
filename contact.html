@@ -141,7 +141,10 @@
     <script>
         // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
-        const totalPrice = urlParams.get('totalPrice') || '0';
+        let totalPrice = urlParams.get('totalPrice') || '0';
+        
+        // Устанавливаем минимальную цену 700 рублей
+        totalPrice = Math.max(700, parseInt(totalPrice));
 
         // Отображаем стоимость заказа
         document.getElementById('orderPrice').textContent = totalPrice;
@@ -151,7 +154,7 @@
 
         // Обновляем ссылки на мессенджеры
         document.getElementById('whatsappBtn').href = `https://wa.me/79994628521?text=${encodeURIComponent(message)}`;
-        document.getElementById('telegramBtn').href = `https://t.me/79994628521?text=${encodeURIComponent(message)}`;
+        document.getElementById('telegramBtn').href = `https://t.me/Muhamiha_tak?text=${encodeURIComponent(message)}`;
     </script>
 </body>
 </html> 
